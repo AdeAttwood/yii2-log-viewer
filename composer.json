@@ -1,13 +1,18 @@
 {
     "name": "adeattwood/yii2-log-viewer",
     "description": "Yii 2 module for viewing the log files",
+    "version": "0.1",
+    "license": "BSD-2-Clause",
     "type": "project",
     "authors": [
         {
-            "name": "AdeAttwood",
-            "email": "attwood16@googlemail.com"
+            "name": "Ade Attwood",
+            "email": "attwood16@googlemail.com",
+            "homepage": "http://adeattwood.co.uk",
+            "role": "Developer"
         }
     ],
+
     "require": {
         "yiisoft/yii2": "^2.0",
         "2amigos/yii2-date-picker-widget": "^1.0"
@@ -23,5 +28,8 @@
             "./node_modules/.bin/bower update",
             "grunt buildDev"
         ]
+    },
+     "autoload": {
+        "psr-4": { "adeattwood\\logviewer\\": "." }
     }
 }
