@@ -1,0 +1,46 @@
+@import "variables"
+
+td
+    &.time
+        min-width: 200px
+
+    &.ip
+        min-width: 100px
+
+    &.message
+        max-width: 400px
+
+    &.level
+        min-width: 160px
+
+.modal-lg 
+    @media (min-width: 992px)
+        width: 90%
+
+.hover-item
+    color: black
+    cursor: pointer
+    transition: all 0.3s ease-in-out
+
+    &:hover
+        color: lighten( black, 50% )
+
+.loading 
+    width: 100%
+    margin-top: 50px
+    text-align: center
+
+#logs-table
+    table.colored tr
+        &.tr-error > td
+            background-color: #ff8c8c
+
+        &.tr-info > td
+            background-color: #c2d5f4
+
+        &.tr-warning > td
+            background-color: #f0edaa
+
+        &.tr-trace > td
+            background-color: #bdeeed
+            

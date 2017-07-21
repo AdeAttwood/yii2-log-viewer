@@ -1,0 +1,28 @@
+{
+  "name": "log-viewer",
+  "version": "1.0.0",
+  "description": "Yii 2 module for viewing the logs",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.7.7",
+    "bower": "^1.8.0",
+    "css-mqpacker": "^5.0.1",
+    "cssnano": "^3.10.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-postcss": "^0.8.0",
+    "node-sass": "^3.11.3",
+    "postcss-import": "^9.1.0",
+    "postcss-uncss": "^0.14.0",
+    "uncss": "^0.14.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

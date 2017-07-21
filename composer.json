@@ -1,0 +1,27 @@
+{
+    "name": "adeattwood/yii2-log-viewer",
+    "description": "Yii 2 module for viewing the log files",
+    "type": "project",
+    "authors": [
+        {
+            "name": "AdeAttwood",
+            "email": "attwood16@googlemail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "^2.0",
+        "2amigos/yii2-date-picker-widget": "^1.0"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "npm install",
+            "./node_modules/.bin/bower install",
+            "grunt"
+        ],
+        "post-update-cmd": [
+            "npm update",
+            "./node_modules/.bin/bower update",
+            "grunt buildDev"
+        ]
+    }
+}
