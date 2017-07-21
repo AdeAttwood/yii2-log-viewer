@@ -2,6 +2,17 @@
 
 namespace adeattwood\logviewer\assets;
 
+/**
+ * Asset for the package loads in all the required js, css and fonts
+ *
+ * @category  PHP
+ * @package   adeattwood/yii2-log-viewer
+ * @author    Ade Attwood <attwood16@googlemail.com>
+ * @copyright 2017 adeattwood.co.uk
+ * @license   BSD-2-Clause http://adeattwood.co.uk/license.html
+ * @link      https://github.com/AdeAttwood/yii2-log-viewer
+ * @since     v0.1
+ */
 class Asset extends \yii\web\AssetBundle
 {
     /**

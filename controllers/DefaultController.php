@@ -9,12 +9,39 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
+/**
+ * The default controller handles all the request for the logs view
+ *
+ * @category  PHP
+ * @package   adeattwood/yii2-log-viewer
+ * @author    Ade Attwood <attwood16@googlemail.com>
+ * @copyright 2017 adeattwood.co.uk
+ * @license   BSD-2-Clause http://adeattwood.co.uk/license.html
+ * @link      https://github.com/AdeAttwood/yii2-log-viewer
+ * @since     v0.1
+ */
 class DefaultController extends \yii\web\Controller
 {
 
+    /**
+     * The layout file for the views
+     *
+     * @var string
+     */
     public $layout = 'main';
 
+    /**
+     * A array of logs to display in the logs view
+     *
+     * @var array
+     */
     protected $logs = [];
+
+    /**
+     * Levels of errors in used to dynamically add to a dropdown for filtering
+     *
+     * @var array
+     */
     protected $levels = [];
 
     /**
@@ -39,20 +66,29 @@ class DefaultController extends \yii\web\Controller
             ]
         ];
     }
-    
 
+    /**
+     * The main action renders the index view
+     *
+     * @return yii\web\Response
+     */
     public function actionIndex()
     {
         return $this->render( 'index' );
     }
 
+    /**
+     * The ajax request action for getting and parsing the log files
+     *
+     * @return yii\web\Response
+     */
     public function actionGetLogs()
     {
         $module = LogViewerModule::getInstance();
         $cache  = Yii::$app->cache->get( 'LOG_' . Yii::$app->request->pathInfo );
 
         if ( isset( $cache[ 'logs' ] ) && isset( $cache[ 'levels' ] ) ) {
-            Yii::trace('Loading logs from cache', __METHOD__);
+            Yii::trace( 'Loading logs from cache', __METHOD__ );
             $this->logs   = $cache[ 'logs' ];
             $this->levels = $cache[ 'levels' ];
         } else {
@@ -81,15 +117,12 @@ class DefaultController extends \yii\web\Controller
             ];
 
             if( $module->logCacheTime ) {
-                Yii::trace( 'Caching logs for ' . $module->logCacheTime . ' seconds', __METHOD__);
+                Yii::trace( 'Caching logs for ' . $module->logCacheTime . ' seconds', __METHOD__ );
                 Yii::$app->cache->set( 'LOG_' . Yii::$app->request->pathInfo, $cache, $module->logCacheTime );
-
             }
         }
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-        
 
         return [
             'logs'  => $this->logs,
@@ -98,6 +131,11 @@ class DefaultController extends \yii\web\Controller
 
     }
 
+    /**
+     * Filters the logs biased on the get parameter's
+     *
+     * @return void
+     */
     protected function filterLogs()
     {
         $get = Yii::$app->request->get();
@@ -128,6 +166,14 @@ class DefaultController extends \yii\web\Controller
         }
     }
 
+    /**
+     * Parses a log file based on the default yii log format
+     * this method populates the `$this->logs`
+     *
+     * @param string $file Path to the log file to parse
+     * 
+     * @return bool
+     */
     protected function parseFile( $file )
     {
         $log = [];
@@ -147,7 +193,6 @@ class DefaultController extends \yii\web\Controller
                 ) {
                     if ( !empty( $log ) ) {
                         $this->logs[] = $log;
-                        
                     }
 
                     $log = [
@@ -170,5 +215,4 @@ class DefaultController extends \yii\web\Controller
 
         return false;
     }
-
 }

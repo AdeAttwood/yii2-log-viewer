@@ -6,7 +6,15 @@ use Yii;
 use yii\web\ForbiddenHttpException;
 
 /**
- * LogViewer module definition class
+ * The main module class
+ *
+ * @category  PHP
+ * @package   adeattwood/yii2-log-viewer
+ * @author    Ade Attwood <attwood16@googlemail.com>
+ * @copyright 2017 adeattwood.co.uk
+ * @license   BSD-2-Clause http://adeattwood.co.uk/license.html
+ * @link      https://github.com/AdeAttwood/yii2-log-viewer
+ * @since     v0.1
  */
 class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
 {
@@ -30,21 +38,21 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
      *
      * @var integer
      */
-    public $logLimit = 1000;
+    public $logLimit = 10000;
 
     /**
      * The amount of time in second to cache the logs
      *
      * @var integer
      */
-    public $logCacheTime = false;
+    public $logCacheTime = 30;
 
     /**
      * The amount of time in second to cache the page html
      *
      * @var integer
      */
-    public $pageCacheTime = false;
+    public $pageCacheTime = 30;
 
     /**
      * If to display different colors for different levels in the table

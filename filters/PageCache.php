@@ -6,10 +6,29 @@ use Yii;
 use yii\di\Instance;
 use yii\web\Response;
 
+/**
+ * Handles the page cache and will minify the html before caching
+ *
+ * @category  PHP
+ * @package   adeattwood/yii2-log-viewer
+ * @author    Ade Attwood <attwood16@googlemail.com>
+ * @copyright 2017 adeattwood.co.uk
+ * @license   BSD-2-Clause http://adeattwood.co.uk/license.html
+ * @link      https://github.com/AdeAttwood/yii2-log-viewer
+ * @since     v0.1
+ */
 class PageCache extends \yii\filters\PageCache
 {
+    /**
+     * If you want to minify the response before caching
+     *
+     * @var boolean
+     */
     public $minify = true;
 
+    /**
+     * @inheritdoc
+     */
     public function cacheResponse()
     {
         array_pop( $this->view->cacheStack );
@@ -50,9 +69,18 @@ class PageCache extends \yii\filters\PageCache
         echo $data[ 'content' ];
     }
 
+    /**
+     * Will minify html
+     *
+     * @param string $input The html to minify
+     *
+     * @return string
+     */
     protected function minifyHtml( $input )
     {
-        if( trim( $input ) === "" ) return $input;
+        if( trim( $input ) === "" ) {
+            return $input;
+        }
         // Remove extra white-space(s) between HTML attribute(s)
         $input = preg_replace_callback( '#<([^\/\s<>!]+)(?:\s+([^<>]*?)\s*|\s*)(\/?)>#s', function( $matches ) {
             return '<' . $matches[1] . preg_replace( '#([^\s=]+)(\=([\'"]?)(.*?)\3)?(\s+|$)#s', ' $1$2', $matches[2] ) . $matches[3] . '>';
@@ -107,6 +135,13 @@ class PageCache extends \yii\filters\PageCache
         $input );
     }
 
+    /**
+     * Will minify inline css
+     *
+     * @param string $input The css to minify
+     *
+     * @return string
+     */
     protected function minifyCss( $input ) {
         if( trim( $input ) === "" ) {
             return $input;
@@ -151,6 +186,13 @@ class PageCache extends \yii\filters\PageCache
         $input);
     }
 
+    /**
+     * Will minify inline javascript
+     *
+     * @param string $input The javascript to minify
+     *
+     * @return string
+     */
     protected function minifyJs( $input ) {
         if( trim( $input ) === "" ) {
             return $input;

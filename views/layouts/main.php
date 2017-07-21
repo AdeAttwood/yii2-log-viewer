@@ -1,9 +1,19 @@
 <?php
+/**
+ * @category  PHP
+ * @package   adeattwood/yii2-log-viewer
+ * @author    Ade Attwood <attwood16@googlemail.com>
+ * @copyright 2017 adeattwood.co.uk
+ * @license   BSD-2-Clause http://adeattwood.co.uk/license.html
+ * @link      https://github.com/AdeAttwood/yii2-log-viewer
+ * @since     v0.1
+ */
+
+use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use yii\helpers\Html;
 
 ?>
 
