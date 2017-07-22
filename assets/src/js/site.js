@@ -13,6 +13,7 @@ var vueOptions = {
         reverse: false,
         sortKey: "time",
         loading: false,
+        errorMessage: false
     },
     computed: {},
     methods: {},
@@ -32,6 +33,8 @@ vueOptions.mounted = function() {
         window.table.levels = response.levels;
         window.table.loading = false;
         window.jQuery( '.loading' ).remove();
+    }).fail( function( response ) {
+        window.table.errorMessage = response.responseJSON.message;
     });
 }
 

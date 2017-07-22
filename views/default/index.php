@@ -41,12 +41,18 @@ $dates = [
 
 echo Html::beginTag( 'div', [ 'id' => 'logs-table' ] );
 
-echo Html::beginTag( 'div', [ 'class' => 'loading', 'v-show' => 'loading' ] );
+echo Html::beginTag( 'div', [ 'class' => 'loading', 'v-show' => 'loading && !errorMessage' ] );
 echo Html::tag( 'h2', 'Loading Log Items' );
 echo Html::tag( 'i', null, [ 'class' => 'fa fa-spinner fa-pulse fa-3x fa-fw' ] );
 echo Html::endTag( 'div' );
 
-echo Html::beginTag( 'div', [ 'v-show' => '!loading' ] );
+echo Html::beginTag( 'div', [ 'style' => 'display: none;', 'v-show' => 'errorMessage', 'class' => 'error alert alert-danger text-center' ] );
+echo Html::tag( 'i', null, [ 'class' => 'fa fa-exclamation-circle' ] );
+echo Html::tag( 'strong', 'Error' );
+echo Html::tag( 'span', '{{ errorMessage }}', [ 'class' => 'error-message' ] );
+echo Html::endTag( 'div' );
+
+echo Html::beginTag( 'div', [ 'v-show' => '!loading && !errorMessage', 'style' => 'display: none;' ] );
 
 echo Html::tag( 'h1', 'Logs' );
 echo Html::tag( 'h2', 'Displaying {{ sortedDataCount }} out of {{ logCount }} log items' );
