@@ -77,6 +77,8 @@ class DefaultController extends \yii\web\Controller
         return $this->render( 'index' );
     }
 
+    
+
     /**
      * The ajax request action for getting and parsing the log files
      *
@@ -84,8 +86,9 @@ class DefaultController extends \yii\web\Controller
      */
     public function actionGetLogs()
     {
-        $module = LogViewerModule::getInstance();
-        $cache  = Yii::$app->cache->get( 'LOG_' . Yii::$app->request->pathInfo );
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        Yii::$app->cache->delete( $this->cacheKey );
+        $cache  = Yii::$app->cache->get( $this->cacheKey );
 
         if ( isset( $cache[ 'logs' ] ) && isset( $cache[ 'levels' ] ) ) {
             Yii::trace( 'Loading logs from cache', __METHOD__ );
@@ -99,12 +102,12 @@ class DefaultController extends \yii\web\Controller
                 $this->parseFile( $target->logFile );
             }
 
-            ArrayHelper::multisort( $this->logs, 'time' );
+            ArrayHelper::multisort( $this->logs, 'time', SORT_DESC );
 
             $this->filterLogs();
 
-            if ( $module->logLimit ) {
-                $this->logs = array_slice( $this->logs, 0, $module->logLimit );
+            if ( LogViewerModule::getInstance()->logLimit ) {
+                $this->logs = array_slice( $this->logs, 0, LogViewerModule::getInstance()->logLimit );
             }
 
             foreach ( $this->logs as $log ) {
@@ -116,13 +119,11 @@ class DefaultController extends \yii\web\Controller
                 'levels' => $this->levels
             ];
 
-            if( $module->logCacheTime ) {
-                Yii::trace( 'Caching logs for ' . $module->logCacheTime . ' seconds', __METHOD__ );
-                Yii::$app->cache->set( 'LOG_' . Yii::$app->request->pathInfo, $cache, $module->logCacheTime );
+            if( LogViewerModule::getInstance()->logCacheTime ) {
+                Yii::trace( 'Caching logs for ' . LogViewerModule::getInstance()->logCacheTime . ' seconds', __METHOD__ );
+                Yii::$app->cache->set( $this->cacheKey, $cache, LogViewerModule::getInstance()->logCacheTime );
             }
         }
-
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         return [
             'logs'  => $this->logs,
@@ -161,6 +162,26 @@ class DefaultController extends \yii\web\Controller
                 if ( isset( $get[ 'user' ] ) && $log[ 'user' ] !== $get[ 'user' ] ) {
                     return false;
                 }
+
+                if ( isset( $get[ 'from' ] ) ) {
+                    $from = Yii::$app->formatter->asTimestamp( $get[ 'from' ] );
+                    $date = Yii::$app->formatter->asTimestamp( $log[ 'time' ] / 1000 );
+                    if ( (int)$from > (int)$date ) {
+                        return false;
+                    }
+                    unset( $from );
+                    unset( $date );
+                }
+
+                if ( isset( $get[ 'to' ] ) ) {
+                    $to   = Yii::$app->formatter->asTimestamp( $get[ 'to' ] );
+                    $date = Yii::$app->formatter->asTimestamp( $log[ 'time' ] / 1000 );
+                    if ( (int)$to < (int)$date ) {
+                        return false;
+                    }
+                    unset( $to );
+                    unset( $date );
+                }
                 return true;
             } );
         }
@@ -191,12 +212,13 @@ class DefaultController extends \yii\web\Controller
                     && isset( $logTimeAndMessage[ 0 ] )
                     && isset( $logTimeAndMessage[ 1 ] )
                 ) {
-                    if ( !empty( $log ) ) {
+                    if ( !empty( $log ) && count( $this->logs ) < LogViewerModule::getInstance()->maxGetLogs ) {
                         $this->logs[] = $log;
                     }
 
                     $log = [
                         'time' => Yii::$app->formatter->asTimestamp( $logTimeAndMessage[ 0 ] ) * 1000,
+                        'rawDate' => $logTimeAndMessage[ 0 ],
                         'message' => $logTimeAndMessage[ 1 ],
                         'ip' => $logInfo[ 1 ],
                         'user_id' => $logInfo[ 2 ],
@@ -214,5 +236,15 @@ class DefaultController extends \yii\web\Controller
         }
 
         return false;
+    }
+
+    /**
+     * Create a string baised in the url to be used for a key when caching
+     *
+     * @return string
+     */
+    protected function getCacheKey()
+    {
+        return 'LOG_' . Yii::$app->request->url;
     }
 }
