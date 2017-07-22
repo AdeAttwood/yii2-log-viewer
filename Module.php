@@ -35,10 +35,20 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
 
     /**
      * The maximum amount of log items to get set to false to disable the limit
+     * If the limit if false then it will fall back to the `$maxGetLogs` limit
+     * to stop the module from running out of memory
      *
      * @var integer
      */
     public $logLimit = 10000;
+
+    /**
+     * The maximum amount of log items to get before sorting and filtering
+     * This is the one to chage if you keep geting out of memory errors
+     *
+     * @var integer
+     */
+    public $maxGetLogs = 84000;
 
     /**
      * The amount of time in second to cache the logs
