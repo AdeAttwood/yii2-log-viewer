@@ -107,6 +107,27 @@ echo Html::endTag( 'thead' );
 
 echo Html::beginTag( 'tbody' );
 
+echo Html::beginTag(
+    'tr',
+    [
+        'class' => 'no-log-items',
+        'v-show' => '!sortedData.length'
+    ]
+);
+echo Html::tag(
+    'td',
+    'No log items were found',
+    [
+        'colspan' => '8'
+    ]
+);
+echo Html::endTag( 'tr' );
+
+echo Html::beginTag( 'tr', [
+    'v-for' => '( item, index ) in sortedData',
+    'v-bind:class' => "'tr-' + item.level"
+] );
+
 echo Html::beginTag( 'tr', [
     'v-for' => '( item, index ) in sortedData',
     'v-bind:class' => "'tr-' + item.level"
