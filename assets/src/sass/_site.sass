@@ -1,5 +1,9 @@
 @import "variables"
 
+div.container-fluid
+    margin-left: 50px
+    margin-right: 50px
+
 td
     &.time
         min-width: 200px
@@ -12,6 +16,12 @@ td
 
     &.level
         min-width: 160px
+
+tr.no-log-items
+    background-color: #9e0000 !important
+    color: white
+    text-align: center
+    font-weight: bolder 
 
 .modal-lg 
     @media (min-width: 992px)
@@ -29,6 +39,13 @@ td
     width: 100%
     margin-top: 50px
     text-align: center
+
+.error
+    margin-top: 100px
+    font-size: 120%
+
+    .error-message
+        margin-left: 15px 
 
 #logs-table
     table.colored tr
