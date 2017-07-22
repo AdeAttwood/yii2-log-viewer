@@ -18,6 +18,14 @@ use yii\web\ForbiddenHttpException;
  */
 class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
 {
+
+    /**
+     * The current version of this module.
+     *
+     * @var string
+     */
+    public $version = '1';
+
     /**
      * @inheritdoc
      */

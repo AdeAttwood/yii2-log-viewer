@@ -1,7 +1,8 @@
 {
     "name": "adeattwood/yii2-log-viewer",
     "description": "Yii 2 module for viewing the log files",
-    "version": "0.1",
+    "version": "1",
+    "time": "2017-07-22 15:58:13",
     "license": "BSD-2-Clause",
     "type": "project",
     "authors": [
@@ -12,7 +13,6 @@
             "role": "Developer"
         }
     ],
-
     "require": {
         "yiisoft/yii2": "^2.0",
         "2amigos/yii2-date-picker-widget": "^1.0"
@@ -29,7 +29,9 @@
             "grunt buildDev"
         ]
     },
-     "autoload": {
-        "psr-4": { "adeattwood\\logviewer\\": "." }
+    "autoload": {
+        "psr-4": {
+            "adeattwood\\logviewer\\": "."
+        }
     }
 }
