@@ -136,3 +136,11 @@ $( 'input[name="date_from"]' ).on( 'change', function( a ) {
 $( 'input[name="date_to"]' ).on( 'change', function( a ) {
     table.date.to = new Date( $( this ).val() ).getTime();
 } );
+
+$( 'select[name="log-files"]' ).change( function() {
+    if ( !$( this ).val() ) {
+        window.location.href = window.location.pathname;
+    }
+    var file = this.options[this.selectedIndex].text;
+    window.location.href = window.location.pathname + '?file=' + file;
+} );

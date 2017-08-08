@@ -73,6 +73,13 @@ class Module extends \yii\base\Module implements \yii\base\BootstrapInterface
     public $pageCacheTime = 30;
 
     /**
+     * The dir to look into to find the log files
+     *
+     * @var string
+     */
+    public $logDir = '@runtime/logs/';
+
+    /**
      * If to display different colors for different levels in the table
      *
      * @var boolean

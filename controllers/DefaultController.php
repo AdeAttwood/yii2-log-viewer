@@ -95,11 +95,20 @@ class DefaultController extends \yii\web\Controller
             $this->logs   = $cache[ 'logs' ];
             $this->levels = $cache[ 'levels' ];
         } else {
-            foreach ( Yii::$app->log->targets as $target ) {
-                if ( !isset( $target->logFile ) ) {
-                    continue;
+            if ( isset( Yii::$app->request->get()[ 'file' ] ) ) {
+                $file = Yii::getAlias( LogViewerModule::getInstance()->logDir ) . Yii::$app->request->get()[ 'file' ];
+                if ( is_file( $file ) ) {
+                    $this->parseFile( Yii::getAlias( LogViewerModule::getInstance()->logDir ) . Yii::$app->request->get()[ 'file' ] );
+                } else {
+                    throw new \Exception( "'$file' is not found" );
                 }
-                $this->parseFile( $target->logFile );
+            } else {
+                foreach ( Yii::$app->log->targets as $target ) {
+                    if ( !isset( $target->logFile ) || !is_file( $target->logFile ) ) {
+                        continue;
+                    }
+                    $this->parseFile( $target->logFile );
+                }
             }
 
             ArrayHelper::multisort( $this->logs, 'time', SORT_DESC );
@@ -125,11 +134,7 @@ class DefaultController extends \yii\web\Controller
             }
         }
 
-        return [
-            'logs'  => $this->logs,
-            'levels' => $this->levels
-        ];
-
+        return $cache;
     }
 
     /**

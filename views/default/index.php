@@ -24,6 +24,8 @@ $this->title = 'Logs - ' . Yii::$app->name;
 
 $logViewerModule = LogViewerModule::getInstance();
 
+$files = array_diff( scandir( Yii::getAlias( $logViewerModule->logDir ) ), array( '.', '..' ) );
+
 $labels = [
   'time' => '',
   'message' => '',
@@ -55,6 +57,12 @@ echo Html::endTag( 'div' );
 echo Html::beginTag( 'div', [ 'v-show' => '!loading && !errorMessage', 'style' => 'display: none;' ] );
 
 echo Html::tag( 'h1', 'Logs' );
+
+echo Html::dropDownList( 'log-files', null, $files, [
+    'class' => 'form-control',
+    'prompt' => 'Choose Log File'
+] );
+
 echo Html::tag( 'h2', 'Displaying {{ sortedDataCount }} out of {{ logCount }} log items' );
 
 Modal::begin( [
